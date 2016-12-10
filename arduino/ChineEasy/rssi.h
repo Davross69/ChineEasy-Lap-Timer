@@ -48,31 +48,6 @@ bool debugRSSI = false;
 
 void rssiInit()
 {
-  int mem_amount = (inRadius*2)+1;
-    float* gaussian_kernel = (float*)malloc(mem_amount*sizeof(float));
-
-    float twoRadiusSquaredRecip = 1.0 / (2.0 * inRadius * inRadius);
-    float sqrtTwoPiTimesRadiusRecip = 1.0 / (sqrt(2.0 * PI) * inRadius);
-    float radiusModifier = inWeight;
-
-    // Create Gaussian Kernel
-    int r = -inRadius;
-    float sum = 0.0f;
-    for (int i = 0; i < mem_amount; i++)
-    {
-        float x = r * radiusModifier;
-        x *= x;
-        float v = sqrtTwoPiTimesRadiusRecip * exp(-x * twoRadiusSquaredRecip);
-        gaussian_kernel[i] = v;
-            
-        sum+=v;
-        r++;
-    }
-
-    // Normalize distribution
-    float div = sum;
-    for (int i = 0; i < mem_amount; i++)
-        gaussian_kernel[i] /= div;
   for(byte rx = 0; rx < _rxCount; rx++)
   {
     noiseFloor[rx] = _noiseFloor;
