@@ -1,3 +1,7 @@
+// ChineEasy Lap Timer
+//
+// By Kev Cross, 2016
+
 #include "serialLink.h"
 
 const byte _buzzerPin = 11;

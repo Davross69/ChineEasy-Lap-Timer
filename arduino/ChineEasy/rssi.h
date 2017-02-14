@@ -7,9 +7,25 @@
 TimerState timerState = PAUSED;
 
 // RSSI data
-const byte _filterSize =  7; // gauss filter
+// http://dev.theomader.com/gaussian-kernel-calculator/
+
+#define GAUSS11 1
+
+#ifdef GAUSS7
+
+const byte _filterSize =  7; // gauss filter - 1 sigma
 const unsigned long _gaussWeight[] = { 383, 242, 61, 6 };
-const unsigned long _gaussTotal = _gaussWeight[0] + (2 * _gaussWeight[1]) + (2 * _gaussWeight[2]) + (2 * _gaussWeight[3]); // 1000 ish
+
+#endif // GAUSS7
+
+#ifdef GAUSS11
+
+const byte _filterSize =  11; // gauss filter - 2 sigma
+const unsigned long _gaussWeight[] = { 198, 176, 122, 66, 28, 9 };
+
+#endif // GAUSS11
+
+const unsigned long _gaussTotal = 1000; // _gaussWeight[0] + (2 * (_gaussWeight[1] + _gaussWeight[...] + _gaussWeight[_windowSize]))
 const byte _windowSize =  (_filterSize - 1) / 2; // gauss filter window
 
 enum PulseState
