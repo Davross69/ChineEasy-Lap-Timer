@@ -1,6 +1,16 @@
 #ifndef _DEFINES_
 #define _DEFINES_
 
+// Timer runs with no RSSI
+#define DEBUG 1
+
+// Pick a gauss filter
+//#define GAUSS7
+#define GAUSS11 1
+
+// Spit out raw RSSI 
+bool debugRSSI = false;
+
 enum TimerState
 {
   PAUSED = 0,
@@ -12,7 +22,7 @@ enum TimerState
 const String _timeState[] = { "$WAIT", "$STARTING", "$RACING", "$REPORTING" };
 
 // Version
-const String _version = "$LapThat! v1.0";
+const String _version = "ChineEasy v1.0";
 
 // number of racers, 1 to 6
 const byte _rxCount =  1; 
@@ -29,6 +39,8 @@ const unsigned short _noiseFloor = 140;
 
 // Lap stuff
 const unsigned long _minLaptime = 4000;
+const unsigned long _longInterval = 3000; // for race start delay
+const unsigned long _startInterval = 1500; // for race start beep
 
 #endif // _DEFINES_
 

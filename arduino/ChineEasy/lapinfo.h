@@ -40,8 +40,17 @@ bool addLap(byte rx, unsigned long pkPos, unsigned short pkRSSI, unsigned long p
     goodLap = true;
     lapTimes[0][rx] = lapTime;
     bestLap[rx] = lapTime;
-    
-    String stringPeak = "R";
+
+    // Spew forth laptime
+    String stringPeak = "$R";
+    stringPeak += rx;
+    stringPeak += ",L1,T";
+    stringPeak += String(lapTime);
+    stringPeak += ",D0";
+    Serial.println(stringPeak); 
+      
+    /* No client version - simple text debug
+    String stringPeak = "$R";
     stringPeak += rx;
     stringPeak += ": Lap\t1\t@ Time:\t";
     stringPeak += String(1E-3 * (float)lapTime, 2);
@@ -61,6 +70,7 @@ bool addLap(byte rx, unsigned long pkPos, unsigned short pkRSSI, unsigned long p
       stringPeak += ")";
     }    
     Serial.println(stringPeak);
+    */
       
     insertLap[rx]++;
   } else {
@@ -78,7 +88,19 @@ bool addLap(byte rx, unsigned long pkPos, unsigned short pkRSSI, unsigned long p
         bestLap[rx] = delta;
         hotLap = true;
       }
+
+      // Spew forth laptime
+      String stringPeak = "$R";
+      stringPeak += rx;
+      stringPeak += ",L";
+      stringPeak += String(insertLap[rx] + 1);      
+      stringPeak += ",T";
+      stringPeak += String(lapTime);
+      stringPeak += ",D";
+      stringPeak += String(delta); 
+      Serial.println(stringPeak); 
       
+      /* No client version - simple text debug
       String stringPeak = "R";
       stringPeak += rx;
       stringPeak += ": Lap\t";      
@@ -105,7 +127,7 @@ bool addLap(byte rx, unsigned long pkPos, unsigned short pkRSSI, unsigned long p
         stringPeak += String(1E-3 * (float)bestLap[rx], 2);
         stringPeak += ")";
       }      
-      Serial.println(stringPeak);
+      Serial.println(stringPeak);*/
 
       insertLap[rx]++;
     }

@@ -6,8 +6,6 @@
 
 const byte _buzzerPin = 11;
 
-const unsigned long _longInterval = 3000; // for race start delay
-const unsigned long _startInterval = 1500; // for race start beep
 const unsigned long _lapInterval = 100; // about 3 per 2 second
 const unsigned long _fastInterval = 150; // about 3 per 2 second
 const unsigned long _slowInterval = 500;
@@ -111,7 +109,7 @@ void loop()
           // Ending race...
           timerState = REPORTING;
         } else {
-          // Process rssi - true is someone laps
+          // Process rssi - true if someone laps
           if (rssiTick(currentMillis))
           {
             // Trigger beep on lap if not alreay beeping

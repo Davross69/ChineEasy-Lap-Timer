@@ -36,11 +36,23 @@ enum PulseState
 };
 
 // Buffers
-unsigned long startMillis = 0; // time of start
-unsigned long frameCount = 0; // acquisition frame counter 
+
+#ifdef DEBUG
+
+unsigned long fakeLapMillis[_rxCount];
+
+#else
+
 unsigned short gauss[_filterSize][_rxCount];
 unsigned long rxTime[_filterSize];
+
+#endif // DEBUG
+
+unsigned long startMillis = 0; // time of start
+unsigned long frameCount = 0; // acquisition frame counter 
+
 unsigned short noiseFloor[_rxCount];
+
 
 // Set defaults for peak finding
 unsigned short edgeThreshold = _edgeThreshold;
@@ -58,9 +70,6 @@ unsigned long noiseCount[_rxCount];
 
 unsigned short peakRSSI[_rxCount]; // for reporting
 unsigned long peakPos[_rxCount];
-
-// Spit out raw RSSI 
-bool debugRSSI = false;
 
 void rssiInit()
 {
@@ -85,14 +94,44 @@ void rssiReset(unsigned long currentMillis)
     
     peakRSSI[rx] = 0;
     peakPos[rx] = 0;
+
+#ifdef DEBUG
+
+    fakeLapMillis[rx] = startMillis + random(4 * _longInterval, 5 * _longInterval);
    
+#else
+
     for(byte gaussIns = 0; gaussIns < _filterSize; gaussIns++)
     {
       rxTime[gaussIns] = 0;
       gauss[gaussIns][rx] = 0;
     }
+
+#endif // DEBUG
+    
   }
 }
+
+#ifdef DEBUG
+
+bool rssiTick(unsigned long currentMillis)
+{
+  bool lapFound = false;
+  frameCount++;
+
+  for(byte rx = 0; rx < _rxCount; rx++)
+  {
+    if (fakeLapMillis[rx] <= currentMillis)
+    {
+      fakeLapMillis[rx] = currentMillis + random(4 * _longInterval, 5 * _longInterval);
+      unsigned long timeMillis = currentMillis - startMillis;
+      lapFound = addLap(rx, timeMillis, random(_peakThreshold, 2 * _peakThreshold), timeMillis - 100, timeMillis + 100);
+    }
+  }
+  return lapFound;
+}
+
+#else
 
 bool rssiTick(unsigned long currentMillis)
 {
@@ -212,6 +251,7 @@ bool rssiTick(unsigned long currentMillis)
 
   return lapFound;
 }
+#endif // DEBUG
 
 #endif // _RSSI_
 

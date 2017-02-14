@@ -74,7 +74,7 @@ void serialTick()
           break;
         case 'H':
           Serial.println("$V?   - query version info");
-          Serial.println("$R?   - query number of racers");
+          Serial.println("$C?   - query number of racers");
           Serial.println("$D    - toggle live RSSI data");
           Serial.println("$L    - toggle extended Lap info");
           Serial.println("$B    - toggle lap beeps");
@@ -86,8 +86,8 @@ void serialTick()
           Serial.println("$Q(?) - change/query minimum RSSI peak width (ms)");
           Serial.println("$W(?) - change/query maximum RSSI peak width (ms)");
           break;
-        case 'R':
-          if (query) Serial.println("$R?" + String(_rxCount));
+        case 'C':
+          if (query) Serial.println("$C?" + String(_rxCount));
           break;
         case 'D':
           debugRSSI = !debugRSSI;
