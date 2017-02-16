@@ -19,13 +19,13 @@ enum TimerState
   REPORTING
 };
 
-const String _timeState[] = { "$WAIT", "$STARTING", "$RACING", "$REPORTING" };
+const String _timeState[] = { "$S1", "$S2", "$S3", "$S4" };
 
 // Version
 const String _version = "ChineEasy v1.0";
 
 // number of racers, 1 to 6
-const byte _rxCount =  1; 
+const byte _rxCount =  2; 
 
 // default peak detection based on experiments
 const unsigned short _edgeThreshold = 50; // rssi is over noise threshold

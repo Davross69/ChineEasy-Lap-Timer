@@ -40,7 +40,7 @@ void setup()
   while (!Serial); // Wait until Serial is ready - Leonardo
 
    // Initialised...
-  Serial.println("$INIT");
+  Serial.println("$S0");
 }
 
 void loop()
@@ -79,7 +79,7 @@ void loop()
           buzzCount = -1;
           
           // Aborting race...
-          timerState = PAUSED;    
+          timerState = PAUSED;
         } else {
           if (currentMillis >= raceCountMillis)
           {
@@ -92,6 +92,7 @@ void loop()
 
             // Go, go, go...
             timerState = RACING;
+            newState = true;
           } else {
             // Do some beeping before start
             if (buzzCount >= 0) ManageBuzzer(currentMillis, 4, _fastInterval, _slowInterval);

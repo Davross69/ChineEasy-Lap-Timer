@@ -46,7 +46,6 @@ bool addLap(byte rx, unsigned long pkPos, unsigned short pkRSSI, unsigned long p
     stringPeak += rx;
     stringPeak += ",L1,T";
     stringPeak += String(lapTime);
-    stringPeak += ",D0";
     Serial.println(stringPeak); 
       
     /* No client version - simple text debug
@@ -96,8 +95,6 @@ bool addLap(byte rx, unsigned long pkPos, unsigned short pkRSSI, unsigned long p
       stringPeak += String(insertLap[rx] + 1);      
       stringPeak += ",T";
       stringPeak += String(lapTime);
-      stringPeak += ",D";
-      stringPeak += String(delta); 
       Serial.println(stringPeak); 
       
       /* No client version - simple text debug
