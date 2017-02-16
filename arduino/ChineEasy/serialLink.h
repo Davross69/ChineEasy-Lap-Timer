@@ -77,7 +77,7 @@ void serialTick()
           Serial.println("$C?   - query number of racers");
           Serial.println("$D    - toggle live RSSI data");
           Serial.println("$L    - toggle extended Lap info");
-          Serial.println("$B    - toggle lap beeps");
+          Serial.println("$B(?) - toggle lap beeps");
           Serial.println("$S(?) - change/query race state");
           Serial.println("$M(?) - change/query minimum lap time (ms)");
           Serial.println("$N(?) - change/query noise time (ms)");
@@ -87,7 +87,7 @@ void serialTick()
           Serial.println("$W(?) - change/query maximum RSSI peak width (ms)");
           break;
         case 'C':
-          if (query) Serial.println("$C?" + String(_rxCount));
+          if (query) Serial.println("$C" + String(_rxCount));
           break;
         case 'D':
           debugRSSI = !debugRSSI;
@@ -96,7 +96,12 @@ void serialTick()
           extendedLapInfo = !extendedLapInfo;
           break;
         case 'B':
-          lapBeeps = !lapBeeps;
+          if (query)
+          {
+            Serial.println("$B" + String(lapBeeps));
+          } else {
+            lapBeeps = !lapBeeps;
+          }
           break;
         case 'S':
           if (query)
@@ -110,7 +115,7 @@ void serialTick()
         case 'P':
           if (query)
           {
-            Serial.println("$P?" + String(peakThreshold));
+            Serial.println("$P" + String(peakThreshold));
           } else {
             peakThreshold = (unsigned short)newValue;
           }
@@ -118,7 +123,7 @@ void serialTick()
         case 'E':
           if (query)
           {
-            Serial.println("$E?" + String(edgeThreshold));
+            Serial.println("$E" + String(edgeThreshold));
           } else {
             edgeThreshold = (unsigned short)newValue;
           }
@@ -126,7 +131,7 @@ void serialTick()
         case 'Q':
           if (query)
           {
-            Serial.println("$Q?" + String(peakMinWidthReject));
+            Serial.println("$Q" + String(peakMinWidthReject));
           } else {
             peakMinWidthReject = (unsigned long)newValue;
           }
@@ -134,7 +139,7 @@ void serialTick()
         case 'W':
           if (query)
           {
-            Serial.println("$W?" + String(peakMaxWidthReject));
+            Serial.println("$W" + String(peakMaxWidthReject));
           } else {
             peakMaxWidthReject = (unsigned long)newValue;
           }
@@ -142,7 +147,7 @@ void serialTick()
         case 'M':
           if (query)
           {
-            Serial.println("$M?" + String(minLaptime));
+            Serial.println("$M" + String(minLaptime));
           } else {
             minLaptime = (unsigned long)newValue;
           }
@@ -150,7 +155,7 @@ void serialTick()
         case 'N':
           if (query)
           {
-            Serial.println("$N?" + String(noiseCountThreshold));
+            Serial.println("$N" + String(noiseCountThreshold));
           } else {
             noiseCountThreshold = (unsigned long)newValue;
           }
