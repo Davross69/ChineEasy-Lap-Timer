@@ -25,12 +25,14 @@ namespace ChineEasy
 
         private int raceState = 0;
         private int beeper = 0;
+        public bool debugRSSI = false;
         private ulong minLapms = 0;
         private ulong minPeakms = 0;
         private ulong maxPeakms = 0;
         private ulong noiseTimems = 0;
         private byte edgeRSSI = 0;
         private byte peakRSSI = 0;
+        public List<byte> rssi = new List<byte>();
 
         public byte EdgeRSSI
         {
@@ -91,7 +93,7 @@ namespace ChineEasy
                 ToolStripMenuItem menuItemConfig = new ToolStripMenuItem();
 
                 // Add right click menu item for start 
-                menuItemStatus.Text = "Start";
+                menuItemStatus.Text = "Initialising";
                 menuItemStatus.Click += start_Click;
 
                 // Add right click menu item for start 
@@ -136,9 +138,12 @@ namespace ChineEasy
         {
             ConfigureUI config = new ConfigureUI();
             config.checkBeep.Checked = (beeper == 1);
+            config.checkDebug.Checked = debugRSSI;
             config.textBoxMinLap.Text = minLapms.ToString();
-            config.textBoxMinPeak.Text = MinPeakms.ToString();
-            config.textBoxMaxPeak.Text = MaxPeakms.ToString();
+            config.textBoxMinPeak.Text = minPeakms.ToString();
+            config.textBoxMaxPeak.Text = maxPeakms.ToString();
+            config.textBoxEdgeRSSI.Text = edgeRSSI.ToString();
+            config.textBoxPeakRSSI.Text = peakRSSI.ToString();
 
             config.ShowDialog(this);
 
@@ -161,6 +166,28 @@ namespace ChineEasy
             if (config.textBoxMinLap.Text != minLapms.ToString())
             {
                 serial.SendCommand("$M" + config.textBoxMinLap.Text + "\r\n");
+            }
+            if (config.textBoxEdgeRSSI.Text != edgeRSSI.ToString())
+            {
+                serial.SendCommand("$E" + config.textBoxEdgeRSSI.Text + "\r\n");
+            }
+            if (config.textBoxPeakRSSI.Text != peakRSSI.ToString())
+            {
+                serial.SendCommand("$P" + config.textBoxPeakRSSI.Text + "\r\n");
+            }
+            if (config.textBoxMinPeak.Text != minPeakms.ToString())
+            {
+                serial.SendCommand("$Q" + config.textBoxMinPeak.Text + "\r\n");
+            }
+            if (config.textBoxMaxPeak.Text != maxPeakms.ToString())
+            {
+                serial.SendCommand("$W" + config.textBoxMaxPeak.Text + "\r\n");
+            }
+
+            if (config.checkDebug.Checked != debugRSSI)
+            {
+                serial.SendCommand("$D\r\n");
+                debugRSSI = !debugRSSI;
             }
         }
 
@@ -216,6 +243,7 @@ namespace ChineEasy
                             racers[r].ClearLaps();
                             updateUI[r] = true;
                         }
+                        if (rssi.Count > 0) rssi.Clear();
                         menuItemStatus.Text = "Start";
                         this.Text = title + " - waiting";
                         break;
@@ -228,6 +256,15 @@ namespace ChineEasy
                         this.Text = title + " - timing";
                         break;
                     case 4:
+                        if (debugRSSI)
+                        {
+                            rssiUI rssiChart = new rssiUI();
+                            foreach (byte b in rssi)
+                            {
+                                rssiChart.chart1.Series[0].Points.AddY(b);
+                            }
+                            rssiChart.Show();
+                        }
                         menuItemStatus.Text = "Clear Laps";
                         this.Text = title + " - reporting";
                         break;

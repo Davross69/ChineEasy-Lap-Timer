@@ -152,9 +152,6 @@ bool rssiTick(unsigned long currentMillis)
     // Filter all racers - NB offset due to filter run-up
     byte gaussCentre = (frameCount - _windowSize) % _filterSize;
     
-    String stringPulse = "";
-    if (debugRSSI) stringPulse += String(rxTime[gaussCentre]);
-    
     for(byte rx = 0; rx < _rxCount; rx++)
     {  
       // Accumulate from middle of filter window
@@ -171,10 +168,11 @@ bool rssiTick(unsigned long currentMillis)
       unsigned short filteredRSSI = (unsigned short)accum;
 
       // For live RSSI
-      if (debugRSSI)
+      if ((rx == 0) && debugRSSI)
       {
-        stringPulse += ",";
-        stringPulse += String(filteredRSSI);  
+        String stringPulse = "$D";
+        stringPulse += String(filteredRSSI);
+        Serial.println(stringPulse);  
       }
         
       // Noise, edge or peak?
@@ -245,7 +243,6 @@ bool rssiTick(unsigned long currentMillis)
         }
       }
     }
-    if (debugRSSI) Serial.println(stringPulse);
   }
   frameCount++;
 

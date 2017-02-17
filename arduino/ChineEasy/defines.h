@@ -2,7 +2,7 @@
 #define _DEFINES_
 
 // Timer runs with no RSSI
-#define DEBUG 1
+//#define DEBUG 1
 
 // Pick a gauss filter
 //#define GAUSS7
@@ -25,11 +25,11 @@ const String _timeState[] = { "$S1", "$S2", "$S3", "$S4" };
 const String _version = "ChineEasy v1.0";
 
 // number of racers, 1 to 6
-const byte _rxCount =  2; 
+const byte _rxCount =  1; 
 
 // default peak detection based on experiments
-const unsigned short _edgeThreshold = 50; // rssi is over noise threshold
-const unsigned short _peakThreshold = 80;
+const unsigned short _edgeThreshold = 180; // rssi is over noise threshold
+const unsigned short _peakThreshold = 200;
 const unsigned long _noiseCountThreshold = 200;
 
 const unsigned long _peakMinWidthReject = 200;

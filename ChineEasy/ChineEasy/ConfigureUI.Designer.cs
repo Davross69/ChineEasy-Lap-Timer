@@ -31,7 +31,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConfigureUI));
             this.textBoxMinLap = new System.Windows.Forms.TextBox();
             this.checkBeep = new System.Windows.Forms.CheckBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
@@ -40,6 +39,12 @@
             this.label6 = new System.Windows.Forms.Label();
             this.textBoxMaxPeak = new System.Windows.Forms.TextBox();
             this.btnApply = new System.Windows.Forms.Button();
+            this.checkDebug = new System.Windows.Forms.CheckBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.textBoxEdgeRSSI = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.textBoxPeakRSSI = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // textBoxMinLap
@@ -52,11 +57,6 @@
             resources.ApplyResources(this.checkBeep, "checkBeep");
             this.checkBeep.Name = "checkBeep";
             this.checkBeep.UseVisualStyleBackColor = true;
-            // 
-            // label1
-            // 
-            resources.ApplyResources(this.label1, "label1");
-            this.label1.Name = "label1";
             // 
             // label2
             // 
@@ -100,10 +100,46 @@
             this.btnApply.UseVisualStyleBackColor = true;
             this.btnApply.Click += new System.EventHandler(this.button1_Click);
             // 
+            // checkDebug
+            // 
+            resources.ApplyResources(this.checkDebug, "checkDebug");
+            this.checkDebug.Name = "checkDebug";
+            this.checkDebug.UseVisualStyleBackColor = true;
+            // 
+            // label8
+            // 
+            resources.ApplyResources(this.label8, "label8");
+            this.label8.Name = "label8";
+            // 
+            // textBoxEdgeRSSI
+            // 
+            resources.ApplyResources(this.textBoxEdgeRSSI, "textBoxEdgeRSSI");
+            this.textBoxEdgeRSSI.Name = "textBoxEdgeRSSI";
+            // 
+            // label10
+            // 
+            resources.ApplyResources(this.label10, "label10");
+            this.label10.Name = "label10";
+            // 
+            // textBoxPeakRSSI
+            // 
+            resources.ApplyResources(this.textBoxPeakRSSI, "textBoxPeakRSSI");
+            this.textBoxPeakRSSI.Name = "textBoxPeakRSSI";
+            // 
+            // label1
+            // 
+            resources.ApplyResources(this.label1, "label1");
+            this.label1.Name = "label1";
+            // 
             // ConfigureUI
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.label10);
+            this.Controls.Add(this.textBoxPeakRSSI);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.textBoxEdgeRSSI);
+            this.Controls.Add(this.checkDebug);
             this.Controls.Add(this.btnApply);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label6);
@@ -129,7 +165,6 @@
 
         public System.Windows.Forms.TextBox textBoxMinLap;
         public System.Windows.Forms.CheckBox checkBeep;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
@@ -138,5 +173,11 @@
         private System.Windows.Forms.Label label6;
         public System.Windows.Forms.TextBox textBoxMaxPeak;
         private System.Windows.Forms.Button btnApply;
+        public System.Windows.Forms.CheckBox checkDebug;
+        private System.Windows.Forms.Label label8;
+        public System.Windows.Forms.TextBox textBoxEdgeRSSI;
+        private System.Windows.Forms.Label label10;
+        public System.Windows.Forms.TextBox textBoxPeakRSSI;
+        private System.Windows.Forms.Label label1;
     }
 }

@@ -195,7 +195,7 @@ namespace ChineEasy
             //System.Diagnostics.Debug.WriteLine(readBuffer);
 
             // Split into sentences
-            bool split = (readBuffer.Length > 3);
+            bool split = (readBuffer.Length > 0);
             while (split)
             {
                 // Start stripping sentences
@@ -242,6 +242,10 @@ namespace ChineEasy
                 case 'B':
                     long beep;
                     if (ParseField(sentence, out beep)) parent.Beep = (int)beep;
+                    break;
+                case 'D':
+                    long rssi;
+                    if (ParseField(sentence, out rssi) && parent.debugRSSI) parent.rssi.Add((byte)rssi);
                     break;
                 case 'E':
                     long edgeRSSI;

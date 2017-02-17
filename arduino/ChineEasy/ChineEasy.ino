@@ -13,6 +13,7 @@ const unsigned long _slowInterval = 500;
 unsigned long lastMillis = 0;
 unsigned long buzzMillis = 0; // buzzer management
 short buzzCount = -1; // -1 is off, other values manage beeps
+unsigned short gasp = 0;
 
 unsigned long raceCountMillis = 0; // time to start race
 
@@ -47,10 +48,13 @@ void loop()
 {
   // Time since boot
   unsigned long currentMillis = millis();
-  if (currentMillis == lastMillis)
+
+  // Process rssi at 1kHz - NB rssi not hogging all cpu
+  if ((gasp > 1000) || (currentMillis == lastMillis))
   {
     // Use downtime to read serial
     serialTick();
+    gasp = 0;
   } else {
     // State machine
     switch(timerState)
@@ -92,7 +96,7 @@ void loop()
 
             // Go, go, go...
             timerState = RACING;
-            newState = true;
+            newState = true; // Mark new state for special case
           } else {
             // Do some beeping before start
             if (buzzCount >= 0) ManageBuzzer(currentMillis, 4, _fastInterval, _slowInterval);
@@ -158,6 +162,7 @@ void loop()
     
     // 1 ms loop
     lastMillis = currentMillis;
+    gasp++;
   }
 }
 
