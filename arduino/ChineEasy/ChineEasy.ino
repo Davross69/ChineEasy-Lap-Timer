@@ -1,6 +1,6 @@
 // ChineEasy Lap Timer
 //
-// By Kev Cross, 2016
+// By Kev Cross, 2016-17
 
 #include "serialLink.h"
 
@@ -191,5 +191,4 @@ void ManageBuzzer(unsigned long currentMillis, byte beeps, unsigned long buzzOnT
     }
   }
 }
-
 

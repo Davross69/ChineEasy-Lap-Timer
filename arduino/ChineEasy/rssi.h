@@ -3,13 +3,12 @@
 
 #include "defines.h"
 #include "lapinfo.h"
+#include "fastADC.h"
 
 TimerState timerState = PAUSED;
 
 // RSSI data
 // http://dev.theomader.com/gaussian-kernel-calculator/
-
-#define GAUSS11 1
 
 #ifdef GAUSS7
 
@@ -50,9 +49,7 @@ unsigned long rxTime[_filterSize];
 
 unsigned long startMillis = 0; // time of start
 unsigned long frameCount = 0; // acquisition frame counter 
-
 unsigned short noiseFloor[_rxCount];
-
 
 // Set defaults for peak finding
 unsigned short edgeThreshold = _edgeThreshold;
@@ -73,6 +70,7 @@ unsigned long peakPos[_rxCount];
 
 void rssiInit()
 {
+  InitFastADC();
   for(byte rx = 0; rx < _rxCount; rx++)
   {
     noiseFloor[rx] = _noiseFloor;
@@ -140,12 +138,36 @@ bool rssiTick(unsigned long currentMillis)
   // Read RSSI's in one go to best sync timers
   byte insert = frameCount % _filterSize; // insert point
   rxTime[insert] = currentMillis - startMillis;
-  for(byte rx = 0; rx < _rxCount; rx++)
-  {
-    // Fill gauss filter buffers
-    gauss[insert][rx] = (unsigned short)(analogRead(rx)) - noiseFloor[rx];
-  }
 
+  // Average reads
+  unsigned long avgRSSI[_rxCount];
+  for (byte i = 0; i < RSSI_AVERAGES; i++)
+  {
+    // Read all channels and accumulate
+    for(byte rx = 0; rx < _rxCount; rx++)
+    {
+      // Init average
+      if (i == 0) avgRSSI[rx] = 0;
+
+      // Accumulate
+      avgRSSI[rx] += (unsigned long)analogRead(rx);
+
+      // Store avg on final average
+      if (i == (RSSI_AVERAGES - 1))
+      {
+        // Fill gauss filter buffers
+        unsigned short avg = (unsigned short)(avgRSSI[rx] / RSSI_AVERAGES);
+        if (avg > noiseFloor[rx])
+        {
+          avg -= noiseFloor[rx];
+        } else {
+          avg = 0;
+        }
+        gauss[insert][rx] = avg;
+      }
+    }
+  }
+  
   // Perform filter after buffer filled
   if (frameCount >= _filterSize)
   {
@@ -168,7 +190,7 @@ bool rssiTick(unsigned long currentMillis)
       unsigned short filteredRSSI = (unsigned short)accum;
 
       // For live RSSI
-      if ((rx == 0) && debugRSSI)
+      if (rx == debugRSSI)
       {
         String stringPulse = "$D";
         stringPulse += String(filteredRSSI);

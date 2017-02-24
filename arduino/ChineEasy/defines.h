@@ -4,12 +4,12 @@
 // Timer runs with no RSSI
 //#define DEBUG 1
 
-// Pick a gauss filter
-//#define GAUSS7
-#define GAUSS11 1
+// RSSI averages
+#define RSSI_AVERAGES 4
 
-// Spit out raw RSSI 
-bool debugRSSI = false;
+// Pick a gauss filter
+#define GAUSS7 1
+//#define GAUSS11 1
 
 enum TimerState
 {
@@ -26,6 +26,9 @@ const String _version = "ChineEasy v1.0";
 
 // number of racers, 1 to 6
 const byte _rxCount =  1; 
+
+// Spit out raw RSSI 
+byte debugRSSI = _rxCount;
 
 // default peak detection based on experiments
 const unsigned short _edgeThreshold = 180; // rssi is over noise threshold

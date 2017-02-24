@@ -90,7 +90,8 @@ void serialTick()
           if (query) Serial.println("$C" + String(_rxCount));
           break;
         case 'D':
-          debugRSSI = !debugRSSI;
+          debugRSSI++;
+          if (debugRSSI > _rxCount) debugRSSI = 0;
           break;
         case 'L':
           extendedLapInfo = !extendedLapInfo;
